@@ -29,27 +29,28 @@ let roundCount = 0; // track the number of rounds that have been played so far
 *
 */
 
+const startSound = new Audio("https://www.youtube.com/watch?v=WpXcKfE15QU");
 const pads = [
  {
    color: "red",
    selector: document.querySelector(".js-pad-red"),
-   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-1.mp3"),
+   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-1.mp3?raw=true"),
  },
  // TODO: Add the objects for the green, blue, and yellow pads. Use object for the red pad above as an example.
  {
    color: "green",
    selector: document.querySelector(".js-pad-green"),
-   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-2.mp3"),
+   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-2.mp3?raw=true"),
  },
  {
    color: "blue",
    selector: document.querySelector(".js-pad-blue"),
-   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-3.mp3"),
+   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-3.mp3?raw=true"),
  },
  {
    color: "yellow",
    selector: document.querySelector(".js-pad-yellow"),
-   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-4.mp3"),
+   sound: new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/simon-says-sound-4.mp3?raw=true"),
  },
 ];
 
@@ -84,7 +85,8 @@ function startButtonHandler() {
  roundCount=1
  startButton.classList.add("hidden")
  statusSpan.classList.remove("hidden")
- playComputerTurn();
+ startSound.play();
+ setTimeout(()=>{playComputerTurn();},5000);
  return { startButton, statusSpan };
 }
 
@@ -109,8 +111,8 @@ function padHandler(event) {
   const { color } = event.target.dataset;
   if (!color) return;
   // TODO: Write your code here.
-   const pad = pads.find(color=>color===color);
-  //pad.sound.play();
+  const pad = pads.find(colors=>colors.color===color);
+  pad.sound.play();
    checkPress(color)
   return color;
 }
@@ -209,10 +211,9 @@ function setText(element, text) {
 function activatePad(color) {
  // TODO: Write your code here.
  const pad = pads.find(colors=>colors.color===color);
- console.log(pad);
  let padList=pad.selector.classList
  padList.add("activated");
- //pad.sound.play();
+ pad.sound.play();
  setTimeout(()=>{padList.remove("activated");},500);
 }
 
@@ -266,7 +267,6 @@ function playComputerTurn() {
  setText(heading, "Round "+roundCount + " of " + maxRoundCount);
  setText(statusSpan, "The computer's turn...")
  computerSequence.push(getRandomItem(color));
- console.log(computerSequence)
  activatePads(computerSequence)
  setTimeout(() => playHumanTurn(roundCount), roundCount * 600 + 1000); // 5
 }
