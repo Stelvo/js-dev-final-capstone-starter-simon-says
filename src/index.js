@@ -2,8 +2,6 @@
  * DOM SELECTORS
  */
 const startButton = document.querySelector(".js-start-button");
-const levelSelector=document.querySelector(".js-text-box")
-const dropDown = document.querySelector(".js-dropdown");
 // TODO: Add the missing query selectors:
 const statusSpan=document.querySelector(".status"); // Use querySelector() to get the status element
 const heading = document.querySelector(".js-heading"); // Use querySelector() to get the heading element
@@ -15,8 +13,7 @@ let computerSequence = []; // track the computer-generated sequence of pad press
 let playerSequence = []; // track the player-generated sequence of pad presses
 let maxRoundCount = 0; // the max number of rounds, varies with the chosen level
 let roundCount = 0; // track the number of rounds that have been played so far
-let level=0;
-let pickedLevel =0;
+let pickedLevel =0;// track the level picked by the player
 /**
 *
 * The `pads` array contains an array of pad objects.
@@ -32,7 +29,7 @@ let pickedLevel =0;
 *
 */
 
-const startSound = new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/start%20Music.mp3?raw=true");
+const startSound = new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/start%20Music.mp3?raw=true"); // custom song import
 const pads = [
  {
    color: "red",
@@ -67,14 +64,12 @@ startButton.addEventListener("click",startButtonHandler);
 /**
 * EVENT HANDLERS
 */
-
-function show(value) {
-  document.querySelector(".text-box").value = value;
-}
-
 const dropdown = document.querySelector(".dropdown")
 dropdown.onclick = function() {
-    dropdown.classList.toggle("active")
+    dropdown.classList.toggle("active") // toggel view to show and hide the dropdown
+}
+function show(value) {
+  document.querySelector(".text-box").value = value; // show function for player to see what level they selected
 }
 
 /**
@@ -93,20 +88,17 @@ dropdown.onclick = function() {
 */
 function startButtonHandler() {
  // TODO: Write your code here.
- pickedLevel=parseInt(document.querySelector(".text-box").value);
+ pickedLevel=parseInt(document.querySelector(".text-box").value); // created a pick level variable bassed on the level selected by player
  if(document.querySelector(".text-box").value=== ""){
   setTimeout(()=>{setText(heading, "Please Pick a Level"),2000});
-  return { startButton, statusSpan };
+  return { startButton, statusSpan }; // error catch if level is not selected before game is started
  }
- setLevel(pickedLevel);
+ setLevel(pickedLevel); // passing the level picked by player
  roundCount=1
  startButton.classList.add("hidden")
- levelSelector.classList.add("hidden")
- dropDown.classList.add("hidden")
- dropdown.classList.add("hidden");
- setText(statusSpan,"Get Ready The game will begin shortly");
+ setText(statusSpan,"Get Ready The game will begin shortly"); // added custom message
  statusSpan.classList.remove("hidden")
- startSound.play();
+ startSound.play(); // added starting sound form mario cart
  setTimeout(()=>{playComputerTurn();},5500);
  return { startButton, statusSpan };
 }
@@ -132,9 +124,9 @@ function padHandler(event) {
   const { color } = event.target.dataset;
   if (!color) return;
   // TODO: Write your code here.
-  const pad = pads.find(colors=>colors.color===color);
-  pad.sound.play();
-   checkPress(color)
+  const pad = pads.find(colors=>colors.color===color); // finding the pad object bassed on the collor passed
+  pad.sound.play(); // playing corisponding sound
+   checkPress(color) // check to make sure that correct color pressed
   return color;
 }
  
@@ -165,43 +157,30 @@ function padHandler(event) {
 *
 */
 function setLevel(level) {
- // TODO: Write your code here.
- if (level===undefined){
-    return maxRoundCount=8
- }
- if (level===0){
-   return ("Please Select a Level");
- }
- if (level===1){
-    return maxRoundCount=8
- }
- if (level===2){
-    return maxRoundCount=14
- }
- if (level===3){
-    return maxRoundCount=20
- }
- if (level===4){
-    return maxRoundCount=31
- }
- if (level===5){
-  return maxRoundCount=42
-}
-if (level===6){
-  return maxRoundCount=58
-}
-if (level===7){
-  return maxRoundCount=74
-}
-if (level===8){
-  return maxRoundCount=95
-}
-if (level===9){
-  return maxRoundCount=116
-}
-if (level===10){
-  return maxRoundCount=142
-}
+  // TODO: Write your code here.
+  switch(level){ // case scario for all 10 levels.
+    case 1: maxRoundCount=8
+      return;
+    case 2: maxRoundCount=14
+      return;
+    case 3: maxRoundCount=20
+      return;
+    case 4: maxRoundCount=31
+      return;
+    case 5: maxRoundCount=42
+      return;
+    case 6: maxRoundCount=58
+      return;
+    case 7: maxRoundCount=74
+      return;
+    case 8: maxRoundCount=95
+      return;
+    case 9: maxRoundCount=116
+      return;
+    case 10: maxRoundCount=142
+      return;
+  }
+ 
 }
 
 /**
@@ -219,7 +198,7 @@ if (level===10){
 * getRandomItem([1, 2, 3, 4]) //> returns 2
 * getRandomItem([1, 2, 3, 4]) //> returns 1
 */
-function getRandomItem(collection) {
+function getRandomItem(collection) { // this code was written when I forked the assignemnt
   if (collection.length === 0) return null;
   const randomIndex = Math.floor(Math.random() * collection.length);
   return collection[randomIndex];
@@ -230,7 +209,7 @@ function getRandomItem(collection) {
 */
 function setText(element, text) {
  // TODO: Write your code here.
- element.textContent=text
+ element.textContent=text // accepts the text and places it in the text lin that corisponds with the class that is allso passed in under the element tab
  return element;
 }
 
@@ -272,8 +251,7 @@ function activatePad(color) {
 
 function activatePads(sequence) {
  // TODO: Write your code here.
- sequence.forEach(myFunction);
-function myFunction(color,index){ setTimeout(()=>{activatePad(color)},600*(index+1));}
+ sequence.forEach((color,index)=>{ setTimeout(()=>{activatePad(color)},600*(index+1));}); // this takes in the sequence passed by the computer array and showes the "picks" made by the computer at a slow pase
 }
 
 /**
@@ -305,7 +283,7 @@ function playComputerTurn() {
  const color = ["red", "blue", "green", "yellow"];
  setText(heading, "Round "+roundCount + " of " + maxRoundCount);
  setText(statusSpan, "The computer's turn...")
- computerSequence.push(getRandomItem(color));
+ computerSequence.push(getRandomItem(color)); // generating a random collor and adding it to computers array
  activatePads(computerSequence)
  setTimeout(() => playHumanTurn(roundCount), roundCount * 600 + 1000); // 5
 }
@@ -319,8 +297,8 @@ function playComputerTurn() {
 */
 function playHumanTurn() {
   // TODO: Write your code here.
-  padContainer.classList.remove("unclickable");
-  setText(statusSpan, "Player's turn: "+roundCount + " presses left")
+  padContainer.classList.remove("unclickable"); // making pads clickable
+  setText(statusSpan, "Player's turn: "+roundCount + " presses left") // displaying how many clicks the player has left
  }
 
 /**
@@ -347,19 +325,17 @@ function playHumanTurn() {
 */
 function checkPress(color) {
  // TODO: Write your code here
-  playerSequence.push(color);
-   let index=playerSequence.length-1;
+  playerSequence.push(color); // adding color selected to player array
+   let index=playerSequence.length-1; // creating index variable bassed on length of player array
   
-  const remainingPresses =computerSequence.length - playerSequence.length;
-  setText(statusSpan, "Player's turn: "+remainingPresses + " presses left")
-  if (computerSequence[0]===playerSequence[0]){
-
-  
-  if (remainingPresses===0){checkRound();}else{
+  const remainingPresses =computerSequence.length - playerSequence.length; // finding the remaning presses left in the round
+  setText(statusSpan, "Player's turn: "+remainingPresses + " presses left") // displaying said remaining presses
+  if (computerSequence[0]===playerSequence[0]){ // checking first color pick to validate it is correct
+  if (remainingPresses===0){checkRound();}else{ 
     if(computerSequence[index]===playerSequence[index]){
       return
   }else{
-      resetGame("Sorry, You Missed that one");
+      resetGame("Sorry, You Missed that one"); // calling reset if color sequence doesn't match
       return;
   }
   }    
