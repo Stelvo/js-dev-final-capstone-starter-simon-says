@@ -2,6 +2,8 @@
  * DOM SELECTORS
  */
 const startButton = document.querySelector(".js-start-button");
+const levelSelector=document.querySelector(".js-text-box")
+const dropDown = document.querySelector(".js-dropdown");
 // TODO: Add the missing query selectors:
 const statusSpan=document.querySelector(".status"); // Use querySelector() to get the status element
 const heading = document.querySelector(".js-heading"); // Use querySelector() to get the heading element
@@ -13,7 +15,8 @@ let computerSequence = []; // track the computer-generated sequence of pad press
 let playerSequence = []; // track the player-generated sequence of pad presses
 let maxRoundCount = 0; // the max number of rounds, varies with the chosen level
 let roundCount = 0; // track the number of rounds that have been played so far
-
+let level=0;
+let pickedLevel =0;
 /**
 *
 * The `pads` array contains an array of pad objects.
@@ -29,7 +32,7 @@ let roundCount = 0; // track the number of rounds that have been played so far
 *
 */
 
-const startSound = new Audio("https://www.youtube.com/watch?v=WpXcKfE15QU");
+const startSound = new Audio("https://github.com/Stelvo/js-dev-final-capstone-starter-simon-says/blob/main/assets/start%20Music.mp3?raw=true");
 const pads = [
  {
    color: "red",
@@ -65,6 +68,15 @@ startButton.addEventListener("click",startButtonHandler);
 * EVENT HANDLERS
 */
 
+function show(value) {
+  document.querySelector(".text-box").value = value;
+}
+
+const dropdown = document.querySelector(".dropdown")
+dropdown.onclick = function() {
+    dropdown.classList.toggle("active")
+}
+
 /**
 * Called when the start button is clicked.
 *
@@ -81,12 +93,21 @@ startButton.addEventListener("click",startButtonHandler);
 */
 function startButtonHandler() {
  // TODO: Write your code here.
- setLevel();
+ pickedLevel=parseInt(document.querySelector(".text-box").value);
+ if(document.querySelector(".text-box").value=== ""){
+  setTimeout(()=>{setText(heading, "Please Pick a Level"),2000});
+  return { startButton, statusSpan };
+ }
+ setLevel(pickedLevel);
  roundCount=1
  startButton.classList.add("hidden")
+ levelSelector.classList.add("hidden")
+ dropDown.classList.add("hidden")
+ dropdown.classList.add("hidden");
+ setText(statusSpan,"Get Ready The game will begin shortly");
  statusSpan.classList.remove("hidden")
  startSound.play();
- setTimeout(()=>{playComputerTurn();},5000);
+ setTimeout(()=>{playComputerTurn();},5500);
  return { startButton, statusSpan };
 }
 
@@ -143,10 +164,13 @@ function padHandler(event) {
 * setLevel(8) //> returns "Please enter level 1, 2, 3, or 4";
 *
 */
-function setLevel(level = 1) {
+function setLevel(level) {
  // TODO: Write your code here.
  if (level===undefined){
     return maxRoundCount=8
+ }
+ if (level===0){
+   return ("Please Select a Level");
  }
  if (level===1){
     return maxRoundCount=8
@@ -160,9 +184,24 @@ function setLevel(level = 1) {
  if (level===4){
     return maxRoundCount=31
  }
- if (level>4){
-   return ("Please enter level 1, 2, 3, or 4");
- }
+ if (level===5){
+  return maxRoundCount=42
+}
+if (level===6){
+  return maxRoundCount=58
+}
+if (level===7){
+  return maxRoundCount=74
+}
+if (level===8){
+  return maxRoundCount=95
+}
+if (level===9){
+  return maxRoundCount=116
+}
+if (level===10){
+  return maxRoundCount=142
+}
 }
 
 /**
@@ -313,6 +352,9 @@ function checkPress(color) {
   
   const remainingPresses =computerSequence.length - playerSequence.length;
   setText(statusSpan, "Player's turn: "+remainingPresses + " presses left")
+  if (computerSequence[0]===playerSequence[0]){
+
+  
   if (remainingPresses===0){checkRound();}else{
     if(computerSequence[index]===playerSequence[index]){
       return
@@ -321,6 +363,10 @@ function checkPress(color) {
       return;
   }
   }    
+}else{
+resetGame("Sorry, You Missed that one");
+return;
+}
 }
 
 /**
@@ -337,6 +383,7 @@ function checkPress(color) {
 * all because it will get overwritten.
 *
 */
+
 
 function checkRound() {
   // TODO: Write your code here.
