@@ -159,6 +159,8 @@ function padHandler(event) {
 function setLevel(level) {
   // TODO: Write your code here.
   switch(level){ // case scario for all 10 levels.
+    case undefined: maxRoundCount=8
+      return;
     case 1: maxRoundCount=8
       return;
     case 2: maxRoundCount=14
