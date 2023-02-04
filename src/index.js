@@ -89,11 +89,7 @@ function show(value) {
 function startButtonHandler() {
  // TODO: Write your code here.
  pickedLevel=parseInt(document.querySelector(".text-box").value); // created a pick level variable bassed on the level selected by player
- if(document.querySelector(".text-box").value=== ""){
-  setTimeout(()=>{setText(heading, "Please Pick a Level"),2000});
-  return { startButton, statusSpan }; // error catch if level is not selected before game is started
- }
- setLevel(pickedLevel); // passing the level picked by player
+ setLevel(pickedLevel); // passing the level picked by player cor started with setLevel();
  roundCount=1
  startButton.classList.add("hidden")
  setText(statusSpan,"Get Ready The game will begin shortly"); // added custom message
@@ -159,28 +155,20 @@ function padHandler(event) {
 function setLevel(level) {
   // TODO: Write your code here.
   switch(level){ // case scario for all 10 levels.
-    case undefined: maxRoundCount=8
-      return;
-    case 1: maxRoundCount=8
-      return;
-    case 2: maxRoundCount=14
-      return;
-    case 3: maxRoundCount=20
-      return;
-    case 4: maxRoundCount=31
-      return;
-    case 5: maxRoundCount=42
-      return;
-    case 6: maxRoundCount=58
-      return;
-    case 7: maxRoundCount=74
-      return;
-    case 8: maxRoundCount=95
-      return;
-    case 9: maxRoundCount=116
-      return;
-    case 10: maxRoundCount=142
-      return;
+    case undefined: 
+      return maxRoundCount=8;
+    case 1: 
+      return maxRoundCount=8;
+    case 2: 
+      return maxRoundCount=14;
+    case 3: 
+      return maxRoundCount=20;
+    case 4: 
+      return maxRoundCount=31;
+  }
+  if(level>4){
+    //setText(heading,);
+    return "Please enter level 1, 2, 3, or 4";
   }
  
 }
